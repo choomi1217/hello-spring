@@ -29,8 +29,10 @@ class MemberServiceTest {
         //given
         Member member = new Member();
         member.setName("hello");
+
         //when
         Long saveId = memberService.join(member);
+
         //then
         Member result = memberService.fineOne(saveId).get();
         assertThat(member.getName()).isEqualTo(result.getName());
@@ -54,5 +56,16 @@ class MemberServiceTest {
 
     @Test
     void fineOne() {
+        //given
+        Member member1 = new Member();
+        member1.setName("spring");
+
+        //when
+        memberService.join(member1);
+        Member findMember = memberService.fineOne(1L).get();
+
+        //then
+        assertThat(findMember.getName()).isEqualTo(member1.getName());
+
     }
 }
