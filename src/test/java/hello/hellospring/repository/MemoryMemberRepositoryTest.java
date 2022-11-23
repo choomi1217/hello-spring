@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import hello.hellospring.domain.Member;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MemoryMemberRepositoryTest {
@@ -16,6 +17,7 @@ class MemoryMemberRepositoryTest {
         repository.clearStore();
     }
 
+    @DisplayName("회원 가입")
     @Test
     public void save(){
         Member member = new Member();
@@ -25,6 +27,7 @@ class MemoryMemberRepositoryTest {
         assertThat(member).isEqualTo(result);
     }
 
+    @DisplayName("회원 이름으로 찾기")
     @Test
     public void findByName(){
         Member member1 = new Member();
@@ -39,6 +42,7 @@ class MemoryMemberRepositoryTest {
         assertThat(spring2).isEqualTo(member2);
     }
 
+    @DisplayName("회원 전체 목록")
     @Test
     public void findAll(){
         Member member1 = new Member();
