@@ -1,33 +1,28 @@
 package hello.hellospring.service;
 
 import hello.hellospring.domain.Member;
+import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
 class MemberServiceIntegrationTest {
 
-    MemoryMemberRepository repository;
-    MemberService memberService;
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository repository;
 
-    @BeforeEach
-    public void beforeEach(){
-        repository = new MemoryMemberRepository();
-        memberService = new MemberService(repository);
-    }
-
-    @AfterEach
-    public void afterEach(){
-        repository.clearStore();
-    }
+    @DisplayName("회원가입")
     @Test
     void join() {
         //given
@@ -36,38 +31,22 @@ class MemberServiceIntegrationTest {
         //when
         Long saveId = memberService.join(member);
         //then
-        Member result = memberService.fineOne(saveId).get();
-        assertThat(member.getName()).isEqualTo(result.getName());
+        Member findMember = repository.findById(saveId).get();
+        assertEquals(member.getName(), findMember.getName());
     }
 
+    @DisplayName("회원 중복 테스트")
     @Test
     void join_duplicate_exception() {
-        //given
+        //Given
         Member member1 = new Member();
-        member1.setName("spring");
-
+        member1.setName("hello");
         Member member2 = new Member();
-        member2.setName("spring");
-
-        //when
+        member2.setName("hello");
+        //When
         memberService.join(member1);
-
-        //then
-        assertThrows(IllegalStateException.class, () -> memberService.join(member2));
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member2));
+        assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
     }
 
-    @Test
-    void fineOne() {
-        //given
-        Member member1 = new Member();
-        member1.setName("spring");
-
-        //when
-        memberService.join(member1);
-        Member findMember = memberService.fineOne(1L).get();
-
-        //then
-        assertThat(findMember.getName()).isEqualTo(member1.getName());
-
-    }
 }
