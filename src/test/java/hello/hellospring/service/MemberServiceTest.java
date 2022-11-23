@@ -7,6 +7,7 @@ import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemoryMemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MemberServiceTest {
@@ -24,6 +25,8 @@ class MemberServiceTest {
     public void afterEach(){
         repository.clearStore();
     }
+
+    @DisplayName("회원 가입")
     @Test
     void join() {
         //given
@@ -38,6 +41,7 @@ class MemberServiceTest {
         assertThat(member.getName()).isEqualTo(result.getName());
     }
 
+    @DisplayName("회원 중복 테스트")
     @Test
     void join_duplicate_exception() {
         //given
@@ -54,6 +58,7 @@ class MemberServiceTest {
         assertThrows(IllegalStateException.class, () -> memberService.join(member2));
     }
 
+    @DisplayName("회원 찾기")
     @Test
     void fineOne() {
         //given
@@ -66,6 +71,6 @@ class MemberServiceTest {
 
         //then
         assertThat(findMember.getName()).isEqualTo(member1.getName());
-
     }
+
 }
