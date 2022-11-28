@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.DataSourceUtils;
-
+/**
+ * dataSource를 주입 받아 db연결을 직접하는 구시대적 방법
+ * */
 public class JdbcMemberRepository implements MemberRepository {
 
     private final DataSource dataSource;
