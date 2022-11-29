@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,9 +38,9 @@ class MemberServiceIntegrationTest {
     void join_duplicate_exception() {
         //given
         Member member1 = new Member();
-        member1.setName("hello");
+        member1.setName("hello2");
         Member member2 = new Member();
-        member2.setName("hello");
+        member2.setName("hello2");
 
         //when
         memberService.join(member1);
